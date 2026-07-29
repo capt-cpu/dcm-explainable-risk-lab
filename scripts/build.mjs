@@ -6,7 +6,7 @@ import {
 import { fileURLToPath } from "node:url";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
-const outputDirectory = fileURLToPath(new URL("../dist/", import.meta.url));
+const outputDirectory = fileURLToPath(new URL("../build/", import.meta.url));
 const staticFiles = [
   "index.html",
   "app.js",
@@ -22,7 +22,7 @@ mkdirSync(outputDirectory, { recursive: true });
 for (const file of staticFiles) {
   copyFileSync(
     new URL(`../${file}`, import.meta.url),
-    new URL(`../dist/${file}`, import.meta.url),
+    new URL(`../build/${file}`, import.meta.url),
   );
 }
 
