@@ -751,6 +751,16 @@ footer p {
   margin: 0;
 }
 
+footer a {
+  color: var(--teal);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 960px) {
   .workspace {
     grid-template-columns: 1fr;
