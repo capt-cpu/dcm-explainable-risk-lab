@@ -195,31 +195,6 @@ footer {
   max-width: 680px;
 }
 
-.hero-note {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: #6b5d58;
-  display: inline-flex;
-  font-size: 12px;
-  gap: 9px;
-  padding: 8px 14px 8px 9px;
-}
-
-.hero-note span {
-  align-items: center;
-  background: var(--coral-soft);
-  border-radius: 50%;
-  color: var(--coral);
-  display: inline-flex;
-  font-size: 11px;
-  font-weight: 900;
-  height: 22px;
-  justify-content: center;
-  width: 22px;
-}
-
 .workspace {
   align-items: start;
   display: grid;
@@ -795,11 +770,6 @@ footer a:hover {
 
   .hero h1 {
     font-size: 42px;
-  }
-
-  .hero-note {
-    border-radius: 18px;
-    text-align: left;
   }
 
   .workspace {
