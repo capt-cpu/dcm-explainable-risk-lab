@@ -351,18 +351,66 @@ document.querySelector("#load-example").addEventListener("click", () => {
   calculate();
 });
 
-fetch("./model.json")
-  .then((response) => {
-    if (!response.ok) throw new Error("模型文件无法读取");
-    return response.json();
-  })
+async function fetchModelFile(url, compressed, timeoutMs = 45000) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, {
+      cache: "no-cache",
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`模型文件无法读取（${response.status}）`);
+
+    if (!compressed) return response.json();
+    if (!response.body || !("DecompressionStream" in window)) {
+      throw new Error("当前浏览器不支持压缩模型");
+    }
+
+    const decompressed = response.body.pipeThrough(new DecompressionStream("gzip"));
+    return new Response(decompressed).json();
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function loadModel() {
+  const candidates = [];
+  if ("DecompressionStream" in window) {
+    candidates.push({
+      url: "./model.json.gz?v=20260731",
+      compressed: true,
+      label: "正在载入压缩模型…",
+    });
+  }
+  candidates.push({
+    url: "./model.json?v=20260731",
+    compressed: false,
+    label: "正在载入兼容模型…",
+  });
+
+  let lastError = null;
+  for (const candidate of candidates) {
+    calculateLabel.textContent = candidate.label;
+    try {
+      return await fetchModelFile(candidate.url, candidate.compressed);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError || new Error("模型文件加载失败");
+}
+
+loadModel()
   .then((loadedModel) => {
     model = loadedModel;
     calculateButton.disabled = false;
     calculateLabel.textContent = "开始预测";
     calculate();
   })
-  .catch(() => {
+  .catch((error) => {
     calculateLabel.textContent = "模型载入失败";
-    showError("模型文件加载失败，请稍后刷新页面重试。");
+    showError(
+      `${error instanceof Error ? error.message : "模型文件加载失败"}，请检查网络后刷新页面重试。`,
+    );
   });

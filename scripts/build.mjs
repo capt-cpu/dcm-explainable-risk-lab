@@ -1,9 +1,12 @@
 import {
   copyFileSync,
+  readFileSync,
   mkdirSync,
   rmSync,
+  writeFileSync,
 } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { gzipSync } from "node:zlib";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 const outputDirectory = fileURLToPath(new URL("../build/", import.meta.url));
@@ -26,6 +29,11 @@ for (const file of staticFiles) {
   );
 }
 
+const modelSource = readFileSync(new URL("../model.json", import.meta.url));
+const compressedModel = gzipSync(modelSource, { level: 9 });
+writeFileSync(new URL("../build/model.json.gz", import.meta.url), compressedModel);
+
 console.log(
-  `Prepared ${staticFiles.length} static files in ${outputDirectory} from ${projectRoot}`,
+  `Prepared ${staticFiles.length + 1} static files in ${outputDirectory} from ${projectRoot}; ` +
+    `compressed model ${modelSource.length} -> ${compressedModel.length} bytes`,
 );
