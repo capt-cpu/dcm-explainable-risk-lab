@@ -123,7 +123,7 @@ footer {
 
 .brand small {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 2px;
 }
 
@@ -135,7 +135,7 @@ footer {
 
 .header-actions a {
   color: var(--ink);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 650;
   text-decoration: none;
 }
@@ -258,7 +258,7 @@ footer {
   border: 0;
   color: var(--teal);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 750;
   padding: 8px;
 }
@@ -266,7 +266,7 @@ footer {
 .section-label {
   border-bottom: 1px solid #e7eeee;
   color: #829297;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.14em;
   margin: 24px 0 14px;
@@ -286,13 +286,13 @@ footer {
 
 .field-label {
   color: #526a71;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .field-label small {
   color: #93a2a6;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   margin-left: 5px;
 }
@@ -358,7 +358,7 @@ footer {
 
 .error {
   color: #b33b33;
-  font-size: 12px;
+  font-size: 14px;
   margin: 12px 0 0;
 }
 
@@ -367,7 +367,7 @@ footer {
   background: #eef4f3;
   border-radius: 999px;
   color: #587277;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.04em;
   padding: 7px 10px;
@@ -477,7 +477,7 @@ footer {
 .risk-copy > small {
   color: #8b999d;
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 8px;
 }
 
@@ -494,7 +494,7 @@ footer {
 
 .baseline-row span {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .baseline-row strong {
@@ -512,7 +512,7 @@ footer {
   align-items: center;
   color: var(--muted);
   display: flex;
-  font-size: 9px;
+  font-size: 12px;
   gap: 5px;
 }
 
@@ -545,11 +545,11 @@ footer {
   align-items: center;
   display: grid;
   gap: 10px;
-  grid-template-columns: 110px minmax(90px, 1fr) 82px;
+  grid-template-columns: 158px minmax(90px, 1fr) 130px;
 }
 
 .contribution > span {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 650;
 }
 
@@ -579,12 +579,12 @@ footer {
 }
 
 .contribution > strong {
-  font-size: 11px;
+  font-size: 13px;
   text-align: right;
 }
 
 .contribution > strong small {
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 500;
   margin-left: 2px;
 }
@@ -600,7 +600,7 @@ footer {
 .method-note {
   border-top: 1px solid #e8eeee;
   color: #819095;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.6;
   margin: 20px 0 0;
   padding-top: 14px;
@@ -640,7 +640,7 @@ footer {
 .metric-card span,
 .metric-card small {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .metric-card strong {
@@ -801,7 +801,7 @@ footer a:hover {
   }
 
   .contribution {
-    grid-template-columns: 92px minmax(70px, 1fr) 74px;
+    grid-template-columns: 112px minmax(70px, 1fr) 100px;
   }
 
   .evidence {

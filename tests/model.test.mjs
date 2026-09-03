@@ -3,6 +3,9 @@ import fs from "node:fs";
 import test from "node:test";
 
 const model = JSON.parse(fs.readFileSync("model.json", "utf8"));
+const validationCases = JSON.parse(
+  fs.readFileSync("tests/model-validation-cases.json", "utf8"),
+);
 
 function predict(patient) {
   const raw = {
@@ -35,45 +38,41 @@ function predict(patient) {
   return votes / model.ntree;
 }
 
-test("公开模型仅包含推理所需的汇总结构", () => {
+test("the public model contains only the locked inference structure", () => {
   assert.deepEqual(
     Object.keys(model).sort(),
     [
       "center",
       "classes",
+      "cvFolds",
+      "cvRepeats",
       "defaults",
       "forestFeatures",
       "globalImportance",
       "inputFeatures",
+      "mtry",
       "ntree",
       "outcome",
       "positiveClass",
       "ranges",
       "scale",
+      "trainingN",
       "trees",
       "typeLevels",
       "version",
     ].sort(),
   );
-  assert.equal(model.ntree, 800);
+  assert.equal(model.version, "locked-2026-09-01");
+  assert.equal(model.outcome, "Severe neurological status: preoperative mJOA <= 11");
+  assert.equal(model.ntree, 1000);
+  assert.equal(model.mtry, 2);
+  assert.equal(model.trainingN, 1410);
+  assert.equal(model.cvFolds, 5);
+  assert.equal(model.cvRepeats, 5);
 });
 
-test("示例病例与R模型的概率一致", () => {
-  const probability = predict({
-    Age: 65,
-    Sex: 1,
-    BMI: 25,
-    Diabetes: 1,
-    Hypertension: 1,
-    Duration: 36,
-    Cobb: 8,
-    Segments: 4,
-    Type: "Mixed",
-    Occupancy: 60,
-    Signal: 1,
-    VAS: 5,
-    Region: 1,
-    Rheumatism: 0,
-  });
-  assert.equal(probability, 0.715);
+test("browser probabilities match the locked R model", () => {
+  for (const { patient, expectedProbability } of validationCases) {
+    assert.equal(predict(patient), expectedProbability);
+  }
 });

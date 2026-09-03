@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="基于随机森林的DCM严重功能状态可解释风险预测研究工具。"
+      content="An explainable locked random-forest tool for identifying severe preoperative neurological status in patients with cervical OPLL."
     />
     <meta name="theme-color" content="#084b4d" />
-    <meta property="og:title" content="DCM可解释风险预测工具" />
+    <meta property="og:title" content="Cervical OPLL Explainable Status Tool" />
     <meta
       property="og:description"
-      content="随机森林 · 14项指标 · 个体贡献解释"
+      content="Locked random forest · 14 preoperative variables · patient-level contribution estimates"
     />
     <meta property="og:image" content="./og.png" />
-    <title>DCM可解释风险预测工具</title>
+    <title>Cervical OPLL Explainable Status Tool</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -24,24 +24,25 @@
       <div class="ambient ambient-two"></div>
 
       <header class="topbar">
-        <a class="brand" href="#top" aria-label="返回页面顶部">
-          <span class="brand-mark">DCM</span>
+        <a class="brand" href="#top" aria-label="Return to the top of the page">
+          <span class="brand-mark">OPLL</span>
           <span>
-            <strong>Explainable Risk Lab</strong>
-            <small>可解释风险预测工具</small>
+            <strong>Explainable Status Lab</strong>
+            <small>Locked research model</small>
           </span>
         </a>
         <div class="header-actions">
-          <span class="status-dot">公开演示版 v1.0</span>
-          <a href="#about">模型说明</a>
+          <span class="status-dot">Research release 2026.09</span>
+          <a href="#about">Model evidence</a>
         </div>
       </header>
 
       <section class="hero" id="top">
-        <span class="eyebrow">Random forest · Reference-based SHAP</span>
-        <h1>DCM严重功能状态<span>可解释预测工具</span></h1>
+        <span class="eyebrow">Random forest · Reference-based Shapley approximation</span>
+        <h1>Cervical OPLL<span>Severe Status Tool</span></h1>
         <p>
-          输入14项临床与影像指标，获得mJOA&lt;12的预测概率，并查看各项指标如何推动本次预测。
+          Enter 14 preoperative clinical and imaging variables to estimate the probability of
+          severe neurological status, defined as a preoperative mJOA score of 11 or lower.
         </p>
       </section>
 
@@ -50,25 +51,25 @@
           <div class="panel-heading">
             <div>
               <span class="step">01</span>
-              <h2 id="patient-title">患者资料</h2>
+              <h2 id="patient-title">Patient characteristics</h2>
             </div>
             <button class="text-button" id="load-example" type="button">
-              载入示例病例
+              Load example
             </button>
           </div>
 
           <form id="patient-form">
-            <div class="section-label">基本与临床信息</div>
+            <div class="section-label">Demographic and clinical variables</div>
             <div class="field-grid" id="basic-fields"></div>
 
-            <div class="section-label">影像学信息</div>
+            <div class="section-label">Imaging variables</div>
             <div class="field-grid" id="imaging-fields"></div>
 
-            <div class="section-label">合并症与地域</div>
+            <div class="section-label">Comorbidity and region</div>
             <div class="field-grid" id="comorbidity-fields"></div>
 
             <button class="primary-button" id="calculate" type="submit" disabled>
-              <span id="calculate-label">正在载入模型…</span>
+              <span id="calculate-label">Loading model…</span>
               <span aria-hidden="true">→</span>
             </button>
             <p class="error" id="error" role="alert" hidden></p>
@@ -80,23 +81,24 @@
             <div class="panel-heading">
               <div>
                 <span class="step">02</span>
-                <h2 id="result-title">预测结果</h2>
+                <h2 id="result-title">Model estimate</h2>
               </div>
-              <span class="model-badge">RF · 800 trees</span>
+              <span class="model-badge">Locked RF · 1,000 trees</span>
             </div>
 
             <div class="risk-layout">
               <div class="risk-ring" id="risk-ring">
                 <div class="risk-ring-inner">
                   <strong id="risk-value">—</strong>
-                  <span>mJOA&lt;12</span>
+                  <span>mJOA ≤11</span>
                 </div>
               </div>
               <div class="risk-copy">
-                <span class="risk-label" id="risk-label">等待计算</span>
-                <h3>严重功能状态预测概率</h3>
+                <span class="risk-label" id="risk-label">Awaiting calculation</span>
+                <h3>Probability of severe neurological status</h3>
                 <p>
-                  本工具输出模型预测概率，不等同于患者未来一定发生该结局。
+                  This is a model-based estimate of the patient's current preoperative status,
+                  not a forecast of future deterioration.
                 </p>
                 <div class="threshold">
                   <span>0%</span>
@@ -106,6 +108,7 @@
                   </div>
                   <span>100%</span>
                 </div>
+                <small>The marker denotes the prespecified 0.50 classification cutoff.</small>
               </div>
             </div>
           </section>
@@ -114,26 +117,27 @@
             <div class="panel-heading">
               <div>
                 <span class="step">03</span>
-                <h2 id="explain-title">个体贡献解释</h2>
+                <h2 id="explain-title">Patient-level contributions</h2>
               </div>
-              <span class="info-chip">32次排列近似</span>
+              <span class="info-chip">32 permutation paths</span>
             </div>
             <div class="baseline-row">
-              <span>参考患者基线</span>
+              <span>Reference profile</span>
               <strong id="baseline-value">—</strong>
               <span>→</span>
-              <span>本次预测</span>
+              <span>Patient estimate</span>
               <strong id="current-value">—</strong>
             </div>
             <div class="legend">
-              <span><i class="up"></i>提高预测概率</span>
-              <span><i class="down"></i>降低预测概率</span>
+              <span><i class="up"></i>Higher estimated probability</span>
+              <span><i class="down"></i>Lower estimated probability</span>
             </div>
             <div class="contribution-list" id="contribution-list">
-              <p class="placeholder">模型载入后显示贡献最大的8项指标。</p>
+              <p class="placeholder">The eight largest contributions appear after the model loads.</p>
             </div>
             <p class="method-note">
-              解释采用汇总参考患者进行排列近似，不包含患者级背景数据；其数值不等同于论文中基于训练人群计算的标准TreeSHAP。
+              Contributions use a summary reference profile and a permutation-based Shapley
+              approximation. No patient-level background data are included in this public site.
             </p>
           </section>
         </div>
@@ -141,52 +145,54 @@
 
       <section class="evidence" id="about">
         <div>
-          <span class="eyebrow">Model evidence</span>
-          <h2>让预测结果可以被核对，而不只是给出一个数字</h2>
+          <span class="eyebrow">Locked model performance</span>
+          <h2>Evaluated in one held-out test set and two external validation cohorts</h2>
         </div>
         <div class="metric-card">
-          <span>内部测试集</span>
-          <strong>0.762</strong>
-          <small>AUC（95% CI 0.721–0.803）</small>
+          <span>Internal test · n=626</span>
+          <strong>0.737</strong>
+          <small>AUC (95% CI, 0.698–0.776)</small>
         </div>
         <div class="metric-card">
-          <span>外部验证</span>
-          <strong>0.790</strong>
-          <small>AUC（95% CI 0.726–0.855）</small>
+          <span>Geographic external · n=207</span>
+          <strong>0.759</strong>
+          <small>AUC (95% CI, 0.690–0.828)</small>
         </div>
         <div class="metric-card">
-          <span>预测变量</span>
-          <strong>14</strong>
-          <small>临床、影像与合并症指标</small>
+          <span>Temporal external · n=300</span>
+          <strong>0.782</strong>
+          <small>AUC (95% CI, 0.730–0.833)</small>
         </div>
       </section>
 
       <section class="privacy">
         <div class="privacy-icon">✓</div>
         <div>
-          <h2>隐私优先的浏览器内计算</h2>
+          <h2>Private, browser-based calculation</h2>
           <p>
-            所有输入均在当前浏览器中处理，不会上传至服务器。公开文件仅包含脱敏后的模型结构与汇总参数。
+            All entries are processed locally in the browser and are neither uploaded nor stored.
+            The public model file contains only the locked forest structure and aggregate
+            preprocessing parameters.
           </p>
         </div>
         <div class="privacy-tags">
-          <span>无需登录</span>
-          <span>不保存输入</span>
-          <span>公开可复核</span>
+          <span>No sign-in</span>
+          <span>No data storage</span>
+          <span>Open for verification</span>
         </div>
       </section>
 
       <footer>
         <div>
-          <strong>DCM Explainable Risk Lab</strong>
-          <span>Research demonstration · 2026</span>
+          <strong>Cervical OPLL Explainable Status Tool</strong>
+          <span>Research use only · locked 1 September 2026</span>
         </div>
         <p>
           <a
             href="https://github.com/capt-cpu/dcm-explainable-risk-lab"
             target="_blank"
             rel="noreferrer"
-          >查看源代码</a>
+          >View source code</a>
         </p>
       </footer>
     </main>

@@ -17,72 +17,55 @@ const examplePatient = {
   Rheumatism: 0,
 };
 
-const referencePatient = {
-  Age: 58,
-  Sex: 1,
-  BMI: 24.05847,
-  Diabetes: 0,
-  Hypertension: 0,
-  Duration: 12,
-  Cobb: 11.495,
-  Segments: 3,
-  Type: "Segmental",
-  Occupancy: 37.87,
-  Signal: 0,
-  VAS: 3,
-  Region: 1,
-  Rheumatism: 0,
-};
-
 const yesNo = [
-  { value: 0, label: "否" },
-  { value: 1, label: "是" },
+  { value: 0, label: "No" },
+  { value: 1, label: "Yes" },
 ];
 
 const fields = [
-  { key: "Age", label: "年龄", unit: "岁", type: "number", min: 18, max: 100, step: 1, group: "basic" },
+  { key: "Age", label: "Age", unit: "years", type: "number", min: 18, max: 100, step: 1, group: "basic" },
   {
     key: "Sex",
-    label: "性别",
+    label: "Sex",
     type: "select",
     options: [
-      { value: 0, label: "女性" },
-      { value: 1, label: "男性" },
+      { value: 0, label: "Female" },
+      { value: 1, label: "Male" },
     ],
     group: "basic",
   },
   { key: "BMI", label: "BMI", unit: "kg/m²", type: "number", min: 10, max: 50, step: 0.1, group: "basic" },
-  { key: "Duration", label: "病程", unit: "月", type: "number", min: 0, max: 300, step: 1, group: "basic" },
-  { key: "VAS", label: "颈痛 VAS", unit: "分", type: "number", min: 0, max: 10, step: 1, group: "basic" },
-  { key: "Cobb", label: "C2–7 Cobb角", unit: "°", type: "number", min: -30, max: 60, step: 0.1, group: "imaging" },
-  { key: "Segments", label: "OPLL节段数", unit: "个", type: "number", min: 1, max: 8, step: 1, group: "imaging" },
+  { key: "Duration", label: "Symptom duration", unit: "months", type: "number", min: 0, max: 300, step: 1, group: "basic" },
+  { key: "VAS", label: "Neck pain VAS", unit: "points", type: "number", min: 0, max: 10, step: 1, group: "basic" },
+  { key: "Cobb", label: "C2–7 Cobb angle", unit: "°", type: "number", min: -30, max: 60, step: 0.1, group: "imaging" },
+  { key: "Segments", label: "Involved OPLL segments", unit: "segments", type: "number", min: 1, max: 8, step: 1, group: "imaging" },
   {
     key: "Type",
-    label: "OPLL类型",
+    label: "OPLL type",
     type: "select",
     options: [
-      { value: "Localized", label: "局限型" },
-      { value: "Segmental", label: "节段型" },
-      { value: "Continuous", label: "连续型" },
-      { value: "Mixed", label: "混合型" },
+      { value: "Localized", label: "Localized" },
+      { value: "Segmental", label: "Segmental" },
+      { value: "Continuous", label: "Continuous" },
+      { value: "Mixed", label: "Mixed" },
     ],
     group: "imaging",
   },
-  { key: "Occupancy", label: "最大椎管侵占率", unit: "%", type: "number", min: 0, max: 100, step: 0.1, group: "imaging" },
-  { key: "Signal", label: "T2高信号", type: "select", options: yesNo, group: "imaging" },
-  { key: "Diabetes", label: "糖尿病", type: "select", options: yesNo, group: "comorbidity" },
-  { key: "Hypertension", label: "高血压", type: "select", options: yesNo, group: "comorbidity" },
+  { key: "Occupancy", label: "Maximum canal occupancy", unit: "%", type: "number", min: 0, max: 100, step: 0.1, group: "imaging" },
+  { key: "Signal", label: "Intramedullary T2 high signal", type: "select", options: yesNo, group: "imaging" },
+  { key: "Diabetes", label: "Diabetes", type: "select", options: yesNo, group: "comorbidity" },
+  { key: "Hypertension", label: "Hypertension", type: "select", options: yesNo, group: "comorbidity" },
   {
     key: "Region",
-    label: "出生地域",
+    label: "Birth region",
     type: "select",
     options: [
-      { value: 0, label: "南方" },
-      { value: 1, label: "北方" },
+      { value: 0, label: "Southern China" },
+      { value: 1, label: "Northern China" },
     ],
     group: "comorbidity",
   },
-  { key: "Rheumatism", label: "风湿免疫疾病", type: "select", options: yesNo, group: "comorbidity" },
+  { key: "Rheumatism", label: "Rheumatic disease", type: "select", options: yesNo, group: "comorbidity" },
 ];
 
 const featureLabels = Object.fromEntries(fields.map((field) => [field.key, field.label]));
@@ -158,7 +141,7 @@ function validatePatient(patient) {
     if (field.type !== "number") continue;
     const value = patient[field.key];
     if (!Number.isFinite(value) || value < field.min || value > field.max) {
-      throw new Error(`${field.label}应在${field.min}–${field.max}${field.unit || ""}之间。`);
+      throw new Error(`${field.label} must be between ${field.min} and ${field.max}${field.unit ? ` ${field.unit}` : ""}.`);
     }
   }
 }
@@ -237,6 +220,7 @@ function shuffled(items, random) {
 function referenceShap(activeModel, patient, permutations = 32) {
   const keys = activeModel.inputFeatures;
   const contributions = Object.fromEntries(keys.map((key) => [key, 0]));
+  const referencePatient = activeModel.defaults;
   const baseline = predictForest(activeModel, referencePatient);
 
   for (let round = 0; round < permutations; round += 1) {
@@ -286,7 +270,7 @@ function renderContributions(contributions) {
     amount.className = value >= 0 ? "positive-text" : "negative-text";
     amount.textContent = `${value >= 0 ? "+" : ""}${(value * 100).toFixed(1)}`;
     const unit = document.createElement("small");
-    unit.textContent = "个百分点";
+    unit.textContent = "percentage points";
     amount.append(unit);
 
     row.append(name, track, amount);
@@ -306,7 +290,7 @@ function renderResult(probability, explanation) {
   document.querySelector("#current-value").textContent = `${percent.toFixed(1)}%`;
 
   const label = document.querySelector("#risk-label");
-  label.textContent = high ? "较高预测概率" : "较低预测概率";
+  label.textContent = high ? "At or above 0.50" : "Below 0.50";
   label.classList.toggle("high", high);
   renderContributions(explanation.contributions);
 }
@@ -319,7 +303,7 @@ function showError(message) {
 function calculate() {
   if (!model) return;
   calculateButton.disabled = true;
-  calculateLabel.textContent = "正在计算…";
+  calculateLabel.textContent = "Calculating…";
   showError("");
 
   window.setTimeout(() => {
@@ -330,10 +314,10 @@ function calculate() {
       const explanation = referenceShap(model, patient);
       renderResult(probability, explanation);
     } catch (error) {
-      showError(error instanceof Error ? error.message : "计算未完成，请刷新后重试。");
+      showError(error instanceof Error ? error.message : "Calculation failed. Please refresh and try again.");
     } finally {
       calculateButton.disabled = false;
-      calculateLabel.textContent = "开始预测";
+      calculateLabel.textContent = "Calculate probability";
     }
   }, 30);
 }
@@ -360,11 +344,11 @@ async function fetchModelFile(url, compressed, timeoutMs = 45000) {
       cache: "no-cache",
       signal: controller.signal,
     });
-    if (!response.ok) throw new Error(`模型文件无法读取（${response.status}）`);
+    if (!response.ok) throw new Error(`The model file could not be loaded (${response.status})`);
 
     if (!compressed) return response.json();
     if (!response.body || !("DecompressionStream" in window)) {
-      throw new Error("当前浏览器不支持压缩模型");
+      throw new Error("This browser cannot decompress the model file");
     }
 
     const decompressed = response.body.pipeThrough(new DecompressionStream("gzip"));
@@ -378,15 +362,15 @@ async function loadModel() {
   const candidates = [];
   if ("DecompressionStream" in window) {
     candidates.push({
-      url: "./model.json.gz?v=20260731",
+      url: "./model.json.gz?v=20260903",
       compressed: true,
-      label: "正在载入压缩模型…",
+      label: "Loading compressed model…",
     });
   }
   candidates.push({
-    url: "./model.json?v=20260731",
+    url: "./model.json?v=20260903",
     compressed: false,
-    label: "正在载入兼容模型…",
+    label: "Loading compatible model…",
   });
 
   let lastError = null;
@@ -398,19 +382,21 @@ async function loadModel() {
       lastError = error;
     }
   }
-  throw lastError || new Error("模型文件加载失败");
+  throw lastError || new Error("The model file could not be loaded");
 }
 
 loadModel()
   .then((loadedModel) => {
     model = loadedModel;
+    document.querySelector(".model-badge").textContent =
+      `Locked RF · ${loadedModel.ntree.toLocaleString("en-US")} trees`;
     calculateButton.disabled = false;
-    calculateLabel.textContent = "开始预测";
+    calculateLabel.textContent = "Calculate probability";
     calculate();
   })
   .catch((error) => {
-    calculateLabel.textContent = "模型载入失败";
+    calculateLabel.textContent = "Model unavailable";
     showError(
-      `${error instanceof Error ? error.message : "模型文件加载失败"}，请检查网络后刷新页面重试。`,
+      `${error instanceof Error ? error.message : "The model file could not be loaded"}. Check your connection and refresh the page.`,
     );
   });

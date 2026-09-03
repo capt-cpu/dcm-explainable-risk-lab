@@ -1,0 +1,154 @@
+[
+  {
+    "patient": {
+      "Age": 65,
+      "Sex": 1,
+      "BMI": 25,
+      "Diabetes": 1,
+      "Hypertension": 1,
+      "Duration": 36,
+      "Cobb": 8,
+      "Segments": 4,
+      "Type": "Mixed",
+      "Occupancy": 60,
+      "Signal": 1,
+      "VAS": 5,
+      "Region": 1,
+      "Rheumatism": 0
+    },
+    "expectedProbability": 0.67700000000000005
+  },
+  {
+    "patient": {
+      "Age": 50,
+      "Sex": 0,
+      "BMI": 21.5,
+      "Diabetes": 0,
+      "Hypertension": 0,
+      "Duration": 6,
+      "Cobb": 18,
+      "Segments": 2,
+      "Type": "Localized",
+      "Occupancy": 25,
+      "Signal": 0,
+      "VAS": 2,
+      "Region": 0,
+      "Rheumatism": 0
+    },
+    "expectedProbability": 0.092999999999999999
+  },
+  {
+    "patient": {
+      "Age": 72,
+      "Sex": 1,
+      "BMI": 28.199999999999999,
+      "Diabetes": 1,
+      "Hypertension": 1,
+      "Duration": 120,
+      "Cobb": -5,
+      "Segments": 6,
+      "Type": "Continuous",
+      "Occupancy": 72,
+      "Signal": 1,
+      "VAS": 7,
+      "Region": 1,
+      "Rheumatism": 1
+    },
+    "expectedProbability": 0.503
+  },
+  {
+    "patient": {
+      "Age": 44,
+      "Sex": 0,
+      "BMI": 23.100000000000001,
+      "Diabetes": 0,
+      "Hypertension": 0,
+      "Duration": 12,
+      "Cobb": 25,
+      "Segments": 1,
+      "Type": "Segmental",
+      "Occupancy": 18,
+      "Signal": 0,
+      "VAS": 1,
+      "Region": 0,
+      "Rheumatism": 0
+    },
+    "expectedProbability": 0.081000000000000003
+  },
+  {
+    "patient": {
+      "Age": 60,
+      "Sex": 1,
+      "BMI": 26.399999999999999,
+      "Diabetes": 0,
+      "Hypertension": 1,
+      "Duration": 48,
+      "Cobb": 10,
+      "Segments": 3,
+      "Type": "Mixed",
+      "Occupancy": 45,
+      "Signal": 1,
+      "VAS": 4,
+      "Region": 1,
+      "Rheumatism": 0
+    },
+    "expectedProbability": 0.48399999999999999
+  },
+  {
+    "patient": {
+      "Age": 78,
+      "Sex": 1,
+      "BMI": 19.800000000000001,
+      "Diabetes": 1,
+      "Hypertension": 1,
+      "Duration": 180,
+      "Cobb": 2,
+      "Segments": 5,
+      "Type": "Continuous",
+      "Occupancy": 68,
+      "Signal": 1,
+      "VAS": 6,
+      "Region": 0,
+      "Rheumatism": 1
+    },
+    "expectedProbability": 0.54000000000000004
+  },
+  {
+    "patient": {
+      "Age": 55,
+      "Sex": 0,
+      "BMI": 31,
+      "Diabetes": 0,
+      "Hypertension": 0,
+      "Duration": 24,
+      "Cobb": 16,
+      "Segments": 2,
+      "Type": "Localized",
+      "Occupancy": 35,
+      "Signal": 0,
+      "VAS": 3,
+      "Region": 1,
+      "Rheumatism": 0
+    },
+    "expectedProbability": 0.34399999999999997
+  },
+  {
+    "patient": {
+      "Age": 68,
+      "Sex": 1,
+      "BMI": 24,
+      "Diabetes": 0,
+      "Hypertension": 1,
+      "Duration": 60,
+      "Cobb": 5,
+      "Segments": 4,
+      "Type": "Segmental",
+      "Occupancy": 52,
+      "Signal": 1,
+      "VAS": 5,
+      "Region": 1,
+      "Rheumatism": 0
+    },
+    "expectedProbability": 0.66200000000000003
+  }
+]

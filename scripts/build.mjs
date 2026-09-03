@@ -31,6 +31,7 @@ for (const file of staticFiles) {
 
 const modelSource = readFileSync(new URL("../model.json", import.meta.url));
 const compressedModel = gzipSync(modelSource, { level: 9 });
+writeFileSync(new URL("../model.json.gz", import.meta.url), compressedModel);
 writeFileSync(new URL("../build/model.json.gz", import.meta.url), compressedModel);
 
 console.log(
