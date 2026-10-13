@@ -11,13 +11,16 @@ https://capt-cpu.github.io/dcm-explainable-risk-lab/
 ## Locked model
 
 - Outcome: severe neurological status, defined as preoperative mJOA <=11.
-- Predictors: 14 prespecified demographic, clinical, and imaging variables.
+- Predictors: 10 clinical and imaging variables: Age, BMI, Duration, Cobb,
+  Segments, Type, Occupancy, Signal, VAS, and Region.
 - Model: combined random forest with 1,000 trees and `mtry = 2`.
 - Development split: 1,410 training participants and 626 held-out internal-test
   participants.
-- Model selection: 5-fold cross-validation repeated 5 times in the training
-  partition only.
-- Model version: `locked-2026-09-01`.
+- Model selection: recursive feature elimination with retuning at each step;
+  the unified 1-SE rule compares algorithms and predictor counts within the
+  combined information set. All selection uses the training partition only,
+  with 5-fold cross-validation repeated 5 times.
+- Model version: `locked-2026-10-13`.
 
 The browser reproduces the full locked forest, including its preprocessing
 parameters and all 1,000 trees. Automated tests compare browser predictions
@@ -28,9 +31,9 @@ validation profiles.
 
 | Cohort | n | AUC (95% CI) |
 |---|---:|---:|
-| Internal test | 626 | 0.737 (0.698-0.776) |
-| Geographic external validation | 207 | 0.759 (0.690-0.828) |
-| Temporal external validation | 300 | 0.782 (0.730-0.833) |
+| Internal test | 626 | 0.741 (0.703-0.779) |
+| Geographic external validation | 207 | 0.796 (0.730-0.862) |
+| Temporal external validation | 300 | 0.783 (0.732-0.834) |
 
 ## Privacy and interpretation
 
@@ -39,7 +42,7 @@ validation profiles.
 - The repository contains no patient-level source data.
 - Patient-level contributions use a summary reference profile and a
   permutation-based Shapley approximation. They are not identical to the
-  TreeSHAP values calculated with patient-level background data in the study.
+  SHAP values calculated with the training background data in the study.
 - This tool identifies current severe neurological status. It is not a
   prognostic model, a diagnostic device, or treatment-decision support.
 

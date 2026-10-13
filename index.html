@@ -11,7 +11,7 @@
     <meta property="og:title" content="Cervical OPLL Explainable Status Tool" />
     <meta
       property="og:description"
-      content="Locked random forest · 14 preoperative variables · patient-level contribution estimates"
+      content="Locked random forest · 10 preoperative variables · patient-level contribution estimates"
     />
     <meta property="og:image" content="./og.png" />
     <title>Cervical OPLL Explainable Status Tool</title>
@@ -32,7 +32,7 @@
           </span>
         </a>
         <div class="header-actions">
-          <span class="status-dot">Research release 2026.09</span>
+          <span class="status-dot">Research release 2026.10</span>
           <a href="#about">Model evidence</a>
         </div>
       </header>
@@ -41,7 +41,7 @@
         <span class="eyebrow">Random forest · Reference-based Shapley approximation</span>
         <h1>Cervical OPLL<span>Severe Status Tool</span></h1>
         <p>
-          Enter 14 preoperative clinical and imaging variables to estimate the probability of
+          Enter 10 preoperative clinical and imaging variables to estimate the probability of
           severe neurological status, defined as a preoperative mJOA score of 11 or lower.
         </p>
       </section>
@@ -65,7 +65,7 @@
             <div class="section-label">Imaging variables</div>
             <div class="field-grid" id="imaging-fields"></div>
 
-            <div class="section-label">Comorbidity and region</div>
+            <div class="section-label">Region</div>
             <div class="field-grid" id="comorbidity-fields"></div>
 
             <button class="primary-button" id="calculate" type="submit" disabled>
@@ -150,18 +150,18 @@
         </div>
         <div class="metric-card">
           <span>Internal test · n=626</span>
-          <strong>0.737</strong>
-          <small>AUC (95% CI, 0.698–0.776)</small>
+          <strong>0.741</strong>
+          <small>AUC (95% CI, 0.703–0.779)</small>
         </div>
         <div class="metric-card">
           <span>Geographic external · n=207</span>
-          <strong>0.759</strong>
-          <small>AUC (95% CI, 0.690–0.828)</small>
+          <strong>0.796</strong>
+          <small>AUC (95% CI, 0.730–0.862)</small>
         </div>
         <div class="metric-card">
           <span>Temporal external · n=300</span>
-          <strong>0.782</strong>
-          <small>AUC (95% CI, 0.730–0.833)</small>
+          <strong>0.783</strong>
+          <small>AUC (95% CI, 0.732–0.834)</small>
         </div>
       </section>
 
@@ -185,7 +185,7 @@
       <footer>
         <div>
           <strong>Cervical OPLL Explainable Status Tool</strong>
-          <span>Research use only · locked 1 September 2026</span>
+          <span>Research use only · locked 13 October 2026</span>
         </div>
         <p>
           <a
@@ -197,6 +197,6 @@
       </footer>
     </main>
 
-    <script src="./app.js" defer></script>
+    <script src="./app.js?v=20261013" defer></script>
   </body>
 </html>

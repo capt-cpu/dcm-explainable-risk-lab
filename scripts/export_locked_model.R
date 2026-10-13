@@ -1,27 +1,28 @@
 options(stringsAsFactors = FALSE)
+Sys.setlocale("LC_CTYPE", "English_United States.utf8")
 
-bundle_path <- file.path(
-  "..",
-  "OPLL_最新完整代码_20260901",
-  "Input",
-  "OPLL_Discordance_7Model_Complete_Results",
-  "Final_Locked_Combined_Model_Bundle.rds"
-)
+bundle_path <- Sys.getenv("OPLL_MODEL_BUNDLE")
+if (!nzchar(bundle_path)) stop("Set OPLL_MODEL_BUNDLE to the locked RF10 RDS file.")
+output_directory <- Sys.getenv("OPLL_MODEL_OUTPUT", unset = ".")
+dir.create(file.path(output_directory, "tests"), recursive = TRUE, showWarnings = FALSE)
 
 bundle <- readRDS(bundle_path)
-fit <- bundle$model
+fit <- bundle$fit
 rf <- fit$finalModel
 features <- bundle$features
 training <- fit$trainingData[, features, drop = FALSE]
 
 stopifnot(
-  identical(bundle$model_name, "RF"),
-  identical(bundle$feature_set, "Combined"),
+  identical(bundle$algorithm, "RF"),
+  identical(bundle$set, "Combined"),
+  identical(bundle$role, "Global1SE"),
+  identical(features, c("Age", "BMI", "Duration", "Cobb", "Segments", "Type",
+                        "Occupancy", "Signal", "VAS", "Region")),
   nrow(training) == 1410L,
   rf$ntree == 1000L,
-  bundle$best_tune$mtry == 2,
-  bundle$cv_folds == 5L,
-  bundle$cv_repeats == 5L,
+  fit$bestTune$mtry == 2,
+  fit$control$number == 5L,
+  fit$control$repeats == 5L,
   identical(unname(rf$classes), c("Yes", "No"))
 )
 
@@ -66,15 +67,15 @@ feature_importance <- vapply(features, function(feature) {
 }, numeric(1))
 
 model <- list(
-  version = "locked-2026-09-01",
+  version = "locked-2026-10-13",
   outcome = "Severe neurological status: preoperative mJOA <= 11",
   classes = unname(rf$classes),
   positiveClass = "Yes",
   ntree = rf$ntree,
-  mtry = unname(bundle$best_tune$mtry),
+  mtry = unname(fit$bestTune$mtry),
   trainingN = nrow(training),
-  cvFolds = bundle$cv_folds,
-  cvRepeats = bundle$cv_repeats,
+  cvFolds = fit$control$number,
+  cvRepeats = fit$control$repeats,
   forestFeatures = unname(names(rf$forest$ncat)),
   center = as.list(fit$preProcess$mean),
   scale = as.list(fit$preProcess$std),
@@ -88,7 +89,7 @@ model <- list(
 
 jsonlite::write_json(
   model,
-  path = "model.json",
+  path = file.path(output_directory, "model.json"),
   auto_unbox = TRUE,
   digits = 16,
   pretty = FALSE,
@@ -97,10 +98,7 @@ jsonlite::write_json(
 
 validation_patients <- data.frame(
   Age = c(65, 50, 72, 44, 60, 78, 55, 68),
-  Sex = c(1, 0, 1, 0, 1, 1, 0, 1),
   BMI = c(25, 21.5, 28.2, 23.1, 26.4, 19.8, 31.0, 24.0),
-  Diabetes = c(1, 0, 1, 0, 0, 1, 0, 0),
-  Hypertension = c(1, 0, 1, 0, 1, 1, 0, 1),
   Duration = c(36, 6, 120, 12, 48, 180, 24, 60),
   Cobb = c(8, 18, -5, 25, 10, 2, 16, 5),
   Segments = c(4, 2, 6, 1, 3, 5, 2, 4),
@@ -112,7 +110,6 @@ validation_patients <- data.frame(
   Signal = c(1, 0, 1, 0, 1, 1, 0, 1),
   VAS = c(5, 2, 7, 1, 4, 6, 3, 5),
   Region = c(1, 0, 1, 0, 1, 0, 1, 1),
-  Rheumatism = c(0, 0, 1, 0, 0, 1, 0, 0),
   check.names = FALSE
 )
 
@@ -133,7 +130,7 @@ validation_cases <- lapply(seq_len(nrow(validation_patients)), function(i) {
 
 jsonlite::write_json(
   validation_cases,
-  path = file.path("tests", "model-validation-cases.json"),
+  path = file.path(output_directory, "tests", "model-validation-cases.json"),
   auto_unbox = TRUE,
   digits = 16,
   pretty = TRUE
@@ -145,6 +142,6 @@ cat(
   "trees; training N =",
   nrow(training),
   "; mtry =",
-  bundle$best_tune$mtry,
+  fit$bestTune$mtry,
   "\n"
 )

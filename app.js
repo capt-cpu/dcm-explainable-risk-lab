@@ -2,10 +2,7 @@
 
 const examplePatient = {
   Age: 65,
-  Sex: 1,
   BMI: 25,
-  Diabetes: 1,
-  Hypertension: 1,
   Duration: 36,
   Cobb: 8,
   Segments: 4,
@@ -14,7 +11,6 @@ const examplePatient = {
   Signal: 1,
   VAS: 5,
   Region: 1,
-  Rheumatism: 0,
 };
 
 const yesNo = [
@@ -24,16 +20,6 @@ const yesNo = [
 
 const fields = [
   { key: "Age", label: "Age", unit: "years", type: "number", min: 18, max: 100, step: 1, group: "basic" },
-  {
-    key: "Sex",
-    label: "Sex",
-    type: "select",
-    options: [
-      { value: 0, label: "Female" },
-      { value: 1, label: "Male" },
-    ],
-    group: "basic",
-  },
   { key: "BMI", label: "BMI", unit: "kg/m²", type: "number", min: 10, max: 50, step: 0.1, group: "basic" },
   { key: "Duration", label: "Symptom duration", unit: "months", type: "number", min: 0, max: 300, step: 1, group: "basic" },
   { key: "VAS", label: "Neck pain VAS", unit: "points", type: "number", min: 0, max: 10, step: 1, group: "basic" },
@@ -53,8 +39,6 @@ const fields = [
   },
   { key: "Occupancy", label: "Maximum canal occupancy", unit: "%", type: "number", min: 0, max: 100, step: 0.1, group: "imaging" },
   { key: "Signal", label: "Intramedullary T2 high signal", type: "select", options: yesNo, group: "imaging" },
-  { key: "Diabetes", label: "Diabetes", type: "select", options: yesNo, group: "comorbidity" },
-  { key: "Hypertension", label: "Hypertension", type: "select", options: yesNo, group: "comorbidity" },
   {
     key: "Region",
     label: "Birth region",
@@ -65,7 +49,6 @@ const fields = [
     ],
     group: "comorbidity",
   },
-  { key: "Rheumatism", label: "Rheumatic disease", type: "select", options: yesNo, group: "comorbidity" },
 ];
 
 const featureLabels = Object.fromEntries(fields.map((field) => [field.key, field.label]));
@@ -149,10 +132,7 @@ function validatePatient(patient) {
 function forestValues(activeModel, patient) {
   const raw = {
     Age: patient.Age,
-    Sex: patient.Sex,
     BMI: patient.BMI,
-    Diabetes: patient.Diabetes,
-    Hypertension: patient.Hypertension,
     Duration: patient.Duration,
     Cobb: patient.Cobb,
     Segments: patient.Segments,
@@ -163,7 +143,6 @@ function forestValues(activeModel, patient) {
     Signal: patient.Signal,
     VAS: patient.VAS,
     Region: patient.Region,
-    Rheumatism: patient.Rheumatism,
   };
 
   return Object.fromEntries(
@@ -362,13 +341,13 @@ async function loadModel() {
   const candidates = [];
   if ("DecompressionStream" in window) {
     candidates.push({
-      url: "./model.json.gz?v=20260903",
+      url: "./model.json.gz?v=20261013",
       compressed: true,
       label: "Loading compressed model…",
     });
   }
   candidates.push({
-    url: "./model.json?v=20260903",
+    url: "./model.json?v=20261013",
     compressed: false,
     label: "Loading compatible model…",
   });
